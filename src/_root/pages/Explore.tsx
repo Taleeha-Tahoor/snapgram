@@ -5,23 +5,7 @@ import useDebounce from "@/hooks/useDebounce";
 import  GridPostList from "@/components/shared/GridPostList";
 import  Loader from "@/components/shared/Loader";
 import { useGetPosts, useSearchPosts } from "@/lib/validation/react-query/queriesAndMutations";
-
-export type SearchResultProps = {
-  isSearchFetching: boolean;
-  searchedPosts: any;
-};
-
-const SearchResults = ({ isSearchFetching, searchedPosts }: SearchResultProps) => {
-  if (isSearchFetching) {
-    return <Loader />;
-  } else if (searchedPosts && searchedPosts.documents.length > 0) {
-    return <GridPostList posts={searchedPosts.documents} />;
-  } else {
-    return (
-      <p className="text-light-4 mt-10 text-center w-full">No results found</p>
-    );
-  }
-};
+import SearchResults from "@/components/shared/SearchResults";
 
 const Explore = () => {
   const { ref, inView } = useInView();

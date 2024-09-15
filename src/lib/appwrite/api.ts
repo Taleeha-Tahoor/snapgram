@@ -51,28 +51,38 @@ export async function saveUserToDB(user: {
     }
 }
 
-export async function signInAccount(user: {email: string; password: string;}) {
-    try {
-       // Check if there's already an active session
-       const currentSession = await account.getSession('current');
+export async function signInAccount(user: {email: string; password: string}) {
+        try {
+            const session = await account.createEmailPasswordSession(user.email, user.password);
         
-       if (currentSession) {
-           return currentSession;
-       }
-
-        const session = await account.createEmailPasswordSession(user.email, user.password);
-        return session;
-
+            return session;
+          } catch (error) {
+            console.log(error);
+          }
+} 
+export async function getAccount() {
+    try {
+      const currentAccount = await account.get();
+  
+      return currentAccount;
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
+  }
 
 export async function getCurrentUser() {
     try {
+        const currentSession = await account.getSession('current');
+        
+        // Check if the session exists, if not, return null
+        if (!currentSession) {
+            console.log("No active session. User needs to log in.");
+            return null;
+        }
+
         const currentAccount = await account.get();
 
-        if(!currentAccount) throw Error;
+        if(!currentAccount) throw new Error("Failed to retrieve account.");
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
