@@ -1,9 +1,8 @@
-import React from 'react'
 
 const AllUsers = () => {
   return (
     <div>
-      AllUsers
+      All Users
     </div>
   )
 }
